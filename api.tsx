@@ -59,31 +59,160 @@ class RithmApi {
     return res.user;
   }
 
-  /** Get companies (filtered by name if not undefined) */
+  /**
+   * Get all lecture sessions details
+   * Returns JSON:
+   * [
+   *  {
+        "id": 0,
+        "lecture": "string",
+        "title": "string",
+        "description": "string",
+        "cohort": "string",
+        "dri": "string",
+        "staff": [
+          "string"
+        ],
+        "week_group": "string",
+        "start_at": "2023-05-23T22:47:11.696Z",
+        "end_at": "2023-05-23T22:47:11.696Z",
+        "asset_set": [
+          "string"
+        ],
+        "status": "private",
+        "api_url": "string"
+      }
+   * ]
+   *
+   */
 
-  static async getCurrentLectureSessions(date=Date.today()) {
-    /**
-     * {
-      "id": 1,
-      "title": "Test-Lecture-1 Title",
-      "status": "published",
-      "api_url": "http://localhost:8000/api/lecturesessions/1/"
+  static async getDetailedLectureSessions() {
+    const res = await this.request("lecturesessions");
+    const allLectureSessions =  res.data.results;
+    const pubLectureSessions =  allLectureSessions.filter(l => l.status === "published");
+    const lectureSessions = [];
+
+    for (const lect of pubLectureSessions){
+      let res =  await this.request(`lecturesessions/${lect.id}`);
+      lectureSessions.push(res.data);
     }
-     */
-    let res = await this.request("lecturesessions");
-    const allLectureSessions =  res.data
-    const pubLectures =  allLectureSessions.filter(l => l.status === "published")
-    const upcomingLectures = [];
 
-    for (const lect of pubLectures){
-      let res =  await this.request(`lecturesessions/${lect.id}`)
-      const upcomingSess = res.data;
-      if (upcomingSess.start_at > Date.now()) upcomingLectures.push(upcomingSess)
-    }
-
-    // return date ? upcomingLectures.filter() : upcomingLectures
-    return upcomingLectures;
+    return lectureSessions;
   }
+
+    /**
+   * Get all exercise details
+   * Returns JSON:
+   * [
+      {
+        "id": 0,
+        "title": "string",
+        "description": "string",
+        "exercise": "string",
+        "cohort": "string",
+        "dri": "string",
+        "week_group": "string",
+        "status": "private",
+        "api_url": "string",
+        "asset_set": [
+          "string"
+        ],
+        "exerciselabsession_set": [
+          {
+            "start_at": "2023-05-23T22:51:23.780Z",
+            "end_at": "2023-05-23T22:51:23.780Z",
+            "dri": "string",
+            "staff": [
+              "string"
+            ]
+          }
+        ]
+      }
+   * ]
+   *
+   */
+
+      static async getDetailedExerciseSessions() {
+        const res = await this.request("exercisesessions");
+        const allExerciseSessions =  res.data.results;
+        const pubExerciseSessions =  allExerciseSessions.filter(ex => ex.status === "published");
+        const exerciseSessions = [];
+
+        for (const exercise of pubExerciseSessions){
+          let res =  await this.request(`exercisesessions/${exercise.id}`);
+          exerciseSessions.push(res.data);
+        }
+
+        return exerciseSessions;
+      }
+
+/**
+   * Get all events details
+   * Returns JSON:
+   * [
+      {
+        "id": 0,
+        "slug": "string",
+        "title": "string",
+        "description": "string",
+        "cohort": "string",
+        "dri": "string",
+        "start_at": "2023-05-23T22:57:47.732Z",
+        "end_at": "2023-05-23T22:57:47.732Z",
+        "staff": [
+          "string"
+        ],
+        "location": "string",
+        "week_group": "string",
+        "status": "private",
+        "api_url": "string",
+        "asset_set": [
+          "string"
+        ]
+      }
+   * ]
+   *
+   */
+
+  static async getDetailedEvents() {
+        const res = await this.request("events");
+        const allEvents =  res.data.results;
+        const pubEvents =  allEvents.filter(evt => evt.status === "published");
+        const events = [];
+
+        for (const evt of pubEvents){
+          let res =  await this.request(`events/${evt.id}`);
+          events.push(res.data);
+        }
+
+        return events;
+      }
+
+  /**TODO: Add Api call to getDayDetail including lectures, exercises, events */
+
+    static async getCurrentLectureSessions(date=Date.parse(Date.now().toString())) {
+      /**
+       * {
+        "id": 1,
+        "title": "Test-Lecture-1 Title",
+        "status": "published",
+        "api_url": "http://localhost:8000/api/lecturesessions/1/"
+      }
+       */
+      let res = await this.request("lecturesessions");
+      const allLectureSessions =  res.data
+      const pubLectures =  allLectureSessions.filter(l => l.status === "published")
+      const upcomingLectures = [];
+
+      for (const lect of pubLectures){
+        let res =  await this.request(`lecturesessions/${lect.id}`)
+        const upcomingSess = res.data;
+        if (upcomingSess.start_at > Date.now()) upcomingLectures.push(upcomingSess)
+      }
+
+      // return date ? upcomingLectures.filter() : upcomingLectures
+      return upcomingLectures;
+    }
 
   /** Get details on a company by handle. */
 
