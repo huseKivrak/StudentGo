@@ -36,3 +36,6 @@ This is the documentation version of this API; you can also visit the
         -> {
 	"token": "7a6d68f87739ccca8c46c5fc6e4c0aa35339253f"
     2. ???
+
+    - look up most secure library for session management
+    - can hardcode token to get things up and running
