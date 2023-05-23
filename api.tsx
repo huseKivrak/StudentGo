@@ -3,7 +3,8 @@ import { Text, View, StyleSheet, TextInput, Button } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:8000/api"
+//'X-CSRFToken: jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty'
 
 
 async function saveToken(value) {
@@ -60,9 +61,28 @@ class RithmApi {
 
   /** Get companies (filtered by name if not undefined) */
 
-  static async getCompanies(nameLike) {
-    let res = await this.request("companies", { nameLike });
-    return res.companies;
+  static async getCurrentLectureSessions(date=Date.today()) {
+    /**
+     * {
+      "id": 1,
+      "title": "Test-Lecture-1 Title",
+      "status": "published",
+      "api_url": "http://localhost:8000/api/lecturesessions/1/"
+    }
+     */
+    let res = await this.request("lecturesessions");
+    const allLectureSessions =  res.data
+    const pubLectures =  allLectureSessions.filter(l => l.status === "published")
+    const upcomingLectures = [];
+
+    for (const lect of pubLectures){
+      let res =  await this.request(`lecturesessions/${lect.id}`)
+      const upcomingSess = res.data;
+      if (upcomingSess.start_at > Date.now()) upcomingLectures.push(upcomingSess)
+    }
+
+    // return date ? upcomingLectures.filter() : upcomingLectures
+    return upcomingLectures;
   }
 
   /** Get details on a company by handle. */
