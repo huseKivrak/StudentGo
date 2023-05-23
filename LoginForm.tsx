@@ -1,55 +1,50 @@
 import React, { Component, useState } from "react";
 // import { View } from 'react-native/types';
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, View, Button } from "react-native";
 
-export class LoginForm extends Component {
-  constructor(props) {
-    super(props)
+export default function LoginForm() {
+  const [username, setUsername] = useState({ username: "" });
+  const [password, setPassword] = useState({ password: "" });
 
-    this.state = {
-      username: "",
-      password: "",
-    };
-
-    this.handleUsernameChange = this.handleUsernameChange.bind(this)
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+  function handleUsernameChange(evt) {
+    setUsername((curr) => ({ ...curr, username: evt.target }));
   }
 
-  handleUsernameChange(evt) {
-    console.log("this", this);
-    this.setState((curr) => ({ ...curr, username: evt.target }));
+  function handlePasswordChange() {
+
   }
 
-  handlePasswordChange(evt) {
-    this.setState((curr) => ({ ...curr, password: evt.target }));
+  function handleSubmit(){
+    console.log("form submitted");
+    console.log("username is:", username, "password is:", password)
   }
 
-  render() {
-    return (
-      <View>
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-          }}
-          placeholder="Enter your username"
-          onChangeText={this.handleUsernameChange}
-          // name="username"
-          value={this.state.username}
-        />
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-          }}
-          placeholder="Enter your password"
-          onChangeText={this.handlePasswordChange}
-          // name="password"
-          value={this.state.password}
-        />
-      </View>
-    );
-  }
+  return (
+    <View>
+      <TextInput
+        style={{
+          height: 40,
+          borderColor: "gray",
+          borderWidth: 1,
+        }}
+        placeholder="Enter your username"
+        onChangeText={newName => setUsername(newName)}
+        value={username}
+      />
+      <TextInput
+        style={{
+          height: 40,
+          borderColor: "gray",
+          borderWidth: 1,
+        }}
+        placeholder="Enter your password"
+        onChangeText={newPass => setPassword(newPass)}
+        // name="password"
+        value={password}
+      />
+      <Button
+        title="Submit"
+        onPress={handleSubmit} />
+    </View>
+  );
 }
