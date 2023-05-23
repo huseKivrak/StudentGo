@@ -39,3 +39,15 @@ This is the documentation version of this API; you can also visit the
 
     - look up most secure library for session management
     - can hardcode token to get things up and running
+
+
+# UI
+## show only today's events
+    1. get LectureSession, Exercise, Event where start_at = today
+    2. Sort all three
+    3. Display
+ ### Date options
+    - Date as state (on mount, setDate = Date.now())
+        -> each "swipe" increments date state by one; logic is consistent
+        "(getCurrentLectures(date state))"
+    - third-party library
