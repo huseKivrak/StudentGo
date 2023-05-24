@@ -16,30 +16,34 @@ const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_UR
 class RithmApi {
   // the token for interactive with the API will be stored here.
 
-  static async login(data) {
-    console.log("login (api file) called with data = ", data);
+  static async login(cred) {
+    console.log("login (api file) called with data = ", cred);
     // debugger;
-      let res;
-      try{
-        res = await axios({
-            method: "post",
-            url: "http://127.0.0.1:8000/api/-token/",
-            // url: "http://10.0.2.2:8000/api/-token/",
-            headers: {
-              'Content-Type': 'application/json',
-              // Accept: 'application/json',
-            },
-            data: {
-              username: data.username,
-              password: data.password,
-            },
-          });
+
+    let res;
+    try {
+      // res = await axios({
+      //     method: "post",
+      //     url: "http://127.0.0.1:8000/api/-token/",
+      //     // url: "http://10.0.2.2:8000/api/-token/",
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       // Accept: 'application/json',
+      //     },
+      //     // data: {
+      //     //   username: data.username,
+      //     //   password: data.password,
+      //     // }
+      //     data:jsonData,
+      //   });
+      res = await axios.post("http://127.0.0.1:8000/api/-token/", cred);
       // console.log("res = ", res);
-      console.log("Response success, res data = ", res.response.data);
-    }catch(e){
-      // console.log("error = ", e);
-      console.error("Error from login api = ", e.response.data);
-      return e;
+      // console.log("Response success, res data = ", res.response.data);
+    } catch (e) {
+      console.log("error = ", e);
+      // console.log("somehow a resp?", res.data.token)
+      // console.error("Error from login api = ", e.response.data);
+      // return res.data.token;
     }
 
     // let res = await axios({
