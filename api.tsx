@@ -36,11 +36,14 @@ class RithmApi {
       //     // }
       //     data:jsonData,
       //   });
-      res = await axios.post("http://127.0.0.1:8000/api/-token/", cred);
+      // res = await axios.post("http://127.0.0.1:8000/api/-token/", cred);
+      // res = await axios.post("http://10.0.2.2:8000/api/-token/", cred);
+      res = await axios.post(`https://${process.env.MACHINE_IP_ADDRESS}:8000/api/-token/`, cred);
       // console.log("res = ", res);
       // console.log("Response success, res data = ", res.response.data);
     } catch (e) {
       console.log("error = ", e);
+      console.log("res = ", res);
       // console.log("somehow a resp?", res.data.token)
       // console.error("Error from login api = ", e.response.data);
       // return res.data.token;
@@ -60,7 +63,7 @@ class RithmApi {
     //   },
     // });
     // debugger;
-    console.log("res = ", res);
+
 
     const token = res.data.token;
     console.log("token received = ", token);
