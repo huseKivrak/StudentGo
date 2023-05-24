@@ -1,8 +1,8 @@
 import * as React from "react";
-import {saveToken, getToken } from "./secureStore";
+import { saveToken, getToken } from "./secureStore";
 import axios from "axios";
 
-const BASE_URL = "http://10.0.2.2:8000/api" // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -16,24 +16,37 @@ const BASE_URL = "http://10.0.2.2:8000/api" // || process.env.REACT_APP_BASE_URL
 class RithmApi {
   // the token for interactive with the API will be stored here.
 
-  static async login(data){
+  static async login(data) {
     console.log("login (api file) called with data = ", data);
+    debugger;
+    //   let res;
+    //   try{
+    //   res = await axios.post(`${BASE_URL}/-token/`,{
+    //     username:data.username,
+    //     password:data.password
+    //   });
+    //   console.log("res = ", res);
+    // }catch(e){
+    //   console.log("error = ", e);
+    //   return e;
+    // }
 
-    let res;
-    try{
-    res = await axios.post(`${BASE_URL}/-token/`,{
-      username:data.username,
-      password:data.password
+    let res = await axios({
+      method: "post",
+      url: "http://127.0.0.1:8000/api/-token/",
+      headers: {
+        'Content-type': 'Application/json',
+        Accept: 'Application/json',
+      },
+      data: {
+        username: data.username,
+        password: data.password,
+      },
     });
+    debugger;
     console.log("res = ", res);
-  }catch(e){
-    console.log("error = ", e);
-    return e;
-  }
 
-
-
-    const token = res.data.token
+    const token = res.data.token;
     console.log("token received = ", token);
 
     await saveToken(token);
@@ -192,8 +205,6 @@ class RithmApi {
 
     return events;
   }
-
-
 
   /** getDayCurric
    *

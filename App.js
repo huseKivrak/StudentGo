@@ -8,6 +8,7 @@ import { getToken } from "./secureStore";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+
   console.log("App launched with loggedIn = ", loggedIn);
 
   useEffect(
