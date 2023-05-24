@@ -2,7 +2,7 @@ import * as React from "react";
 import {saveToken, getToken } from "./secureStore";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/api" // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = "http://10.0.2.2:8000/api" // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -19,12 +19,21 @@ class RithmApi {
   static async login(data){
     console.log("login (api file) called with data = ", data);
 
-    let res = await axios.post(`${BASE_URL}/-token/`,{
+    let res;
+    try{
+    res = await axios.post(`${BASE_URL}/-token/`,{
       username:data.username,
       password:data.password
-    })
+    });
+    console.log("res = ", res);
+  }catch(e){
+    console.log("error = ", e);
+    return e;
+  }
 
-    const token = res.data.token;
+
+
+    const token = res.data.token
     console.log("token received = ", token);
 
     await saveToken(token);
