@@ -14,8 +14,8 @@ export default function Login({rithmLogin}) {
   });
 
   const onSubmit = (data) => {
+    console.log("onSubmit called with data = ", data);
     rithmLogin(data)
-    console.log(data);
   };
 
   return (
