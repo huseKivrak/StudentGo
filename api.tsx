@@ -1,25 +1,9 @@
 import * as React from "react";
-import { Text, View, StyleSheet, TextInput, Button } from "react-native";
-import * as SecureStore from "expo-secure-store";
+import {saveToken, getToken } from "./secureStore";
 import axios from "axios";
 
 const BASE_URL = "http://localhost:8000/api" // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
-
-
-
-async function saveToken(value) {
-  await SecureStore.setItemAsync("token", value);
-}
-
-async function getToken() {
-  let result = await SecureStore.getItemAsync("token");
-  if (result) {
-    return result;
-  } else {
-    throw new Error("No values stored under that key.");
-  }
-}
 
 /** API Class.
  *
@@ -32,14 +16,16 @@ async function getToken() {
 class RithmApi {
   // the token for interactive with the API will be stored here.
 
-
   static async login(data){
-    let res = await axios.post(`${BASE_URL}/-token`,{
+    console.log("login (api file) called with data = ", data);
+
+    let res = await axios.post(`${BASE_URL}/-token/`,{
       username:data.username,
       password:data.password
     })
 
     const token = res.data.token;
+    console.log("token received = ", token);
 
     await saveToken(token);
 
@@ -49,8 +35,9 @@ class RithmApi {
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
 
-    const url = `${BASE_URL}/${endpoint}`;
-    const headers = { Authorization: `Bearer ${getToken()}` };
+    const token = await getToken();
+    const url = `${BASE_URL}/${endpoint}/`;
+    const headers = { Authorization: `Bearer ${token}` };
     const params = method === "get" ? data : {};
 
     try {
