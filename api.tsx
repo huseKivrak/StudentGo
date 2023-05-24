@@ -18,32 +18,44 @@ class RithmApi {
 
   static async login(data) {
     console.log("login (api file) called with data = ", data);
-    debugger;
-    //   let res;
-    //   try{
-    //   res = await axios.post(`${BASE_URL}/-token/`,{
-    //     username:data.username,
-    //     password:data.password
-    //   });
-    //   console.log("res = ", res);
-    // }catch(e){
-    //   console.log("error = ", e);
-    //   return e;
-    // }
+    // debugger;
+      let res;
+      try{
+        res = await axios({
+            method: "post",
+            url: "http://127.0.0.1:8000/api/-token/",
+            // url: "http://10.0.2.2:8000/api/-token/",
+            headers: {
+              'Content-Type': 'application/json',
+              // Accept: 'application/json',
+            },
+            data: {
+              username: data.username,
+              password: data.password,
+            },
+          });
+      // console.log("res = ", res);
+      console.log("Response success, res data = ", res.response.data);
+    }catch(e){
+      // console.log("error = ", e);
+      console.error("Error from login api = ", e.response.data);
+      return e;
+    }
 
-    let res = await axios({
-      method: "post",
-      url: "http://127.0.0.1:8000/api/-token/",
-      headers: {
-        'Content-type': 'Application/json',
-        Accept: 'Application/json',
-      },
-      data: {
-        username: data.username,
-        password: data.password,
-      },
-    });
-    debugger;
+    // let res = await axios({
+    //   method: "post",
+    //   url: "http://127.0.0.1:8000/api/-token/",
+    //   // url: "http://10.0.2.2:8000/api/-token/",
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     // Accept: 'application/json',
+    //   },
+    //   data: {
+    //     username: data.username,
+    //     password: data.password,
+    //   },
+    // });
+    // debugger;
     console.log("res = ", res);
 
     const token = res.data.token;
@@ -59,7 +71,7 @@ class RithmApi {
 
     const token = await getToken();
     const url = `${BASE_URL}/${endpoint}/`;
-    const headers = { Authorization: `Bearer ${token}` };
+    const headers = { Authorization: `Token ${token}` };
     const params = method === "get" ? data : {};
 
     try {
