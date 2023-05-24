@@ -1,39 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { useState } from 'react';
-
-import Login from './Login';
+[import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { useState, useEffect } from "react";
+import RithmApi from "./api.js";
+import Login from "./Login";
+import HomePage from "./HomePage";
 
 export default function App() {
-  const [sessionId, setSessionId] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  /** rithmLogin
-   *
-   * store sessionId/token from rithm api?
-   *
-   */
-  async function rithmLogin(data){
-    /**make POST request to rithm API with login credentials,
-     *store sessionId/cookie somewhere, use for future requests*/
-    const result = await axios.POST("rithmAPI", {data})
+  useEffect(
+    function checkAndSetLoginStatusOnMount() {
+      async function checkSetLogin() {
+        try {
+          await getToken();
+          setLoggedIn(true);
+        } catch (err) {
+          setLoggedIn(false);
+        }
+      }
+      checkSetLogin()
+     }, []
+  );
 
-    const token = result.data
-    setSessionId(token);
+/** rithmLogin
+ *
+ * store sessionId/token from rithm api?
+ *
+ */
+async function rithmLogin(data) {
+  /**make POST request to rithm API with login credentials,
+   *store sessionId/cookie somewhere, use for future requests*/
+
+  const success = await RithmApi.login(data);
+  if (success === "Token saved.") {
+    setLoggedIn(true);
   }
 
   return (
     <View style={styles.container}>
-      <Login rithmLogin={rithmLogin}/>
-      <StatusBar style="auto" />
+      {loggedIn ? <HomePage /> : <Login rithmLogin={rithmLogin} />}
+      <StatusBar />
     </View>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
+}
