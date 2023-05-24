@@ -1,8 +1,10 @@
+import { Text, View } from "react-native";
+
 function HomePage(){
     return (
-        <div>
-            <h1>Home Page</h1>
-        </div>
+        <View>
+            <Text>Home Page</Text>
+        </View>
     )
 
 }
