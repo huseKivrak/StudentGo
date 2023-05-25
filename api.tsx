@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 const { manifest } = Constants;
 
 // const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
-const BASE_URL = "https://77dd-107-3-134-199.ngrok-free.app/api"; // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -17,13 +17,15 @@ const BASE_URL = "https://77dd-107-3-134-199.ngrok-free.app/api"; // || process.
  */
 
 class RithmApi {
-
-  static async login(cred) {
+  static async getAndSaveToken(cred) {
     console.log("login (api file) called with data = ", cred);
 
     let res;
     try {
-      res = await axios.post(`https://77dd-107-3-134-199.ngrok-free.app/api/-token/`, cred);
+      res = await axios.post(
+        `https://r99.ngrok.dev/api/-token/`,
+        cred
+      );
       console.log("login res = ", res);
     } catch (err) {
       console.log("login catch - error = ", err);
@@ -50,8 +52,8 @@ class RithmApi {
     console.log("request headers = ", tokenHeaders);
 
     try {
-      console.log("MAKING AXIOS REQUEST")
-      const res = (await axios.get(url, {headers: tokenHeaders}));
+      console.log("MAKING AXIOS REQUEST");
+      const res = await axios.get(url, { headers: tokenHeaders });
       console.log("res from request inside try block = ", res);
       return res;
     } catch (err) {
@@ -91,7 +93,7 @@ class RithmApi {
   static async getDetailedLectureSessions() {
     let res = await this.request("lecturesessions");
     const allLectureSessions = res.data.results;
-    console.log("allLectureSessions", allLectureSessions)
+    console.log("allLectureSessions", allLectureSessions);
     const pubLectureSessions = allLectureSessions.filter(
       (l) => l.status === "published"
     );
@@ -101,7 +103,7 @@ class RithmApi {
       let res = await this.request(`lecturesessions/${lect.id}`);
       lectureSessions.push(res.data);
     }
-
+    lectureSessions.forEach(ls => ls.type === "lecture")
     return lectureSessions;
   }
 
@@ -149,7 +151,7 @@ class RithmApi {
       let res = await this.request(`exercisesessions/${exercise.id}`);
       exerciseSessions.push(res.data);
     }
-
+    exerciseSessions.forEach(ex => ex.type = "exercise")
     return exerciseSessions;
   }
 
@@ -191,7 +193,7 @@ class RithmApi {
       let res = await this.request(`events/${evt.id}`);
       events.push(res.data);
     }
-
+    events.forEach(ev => ev.type === "event")
     return events;
   }
 
