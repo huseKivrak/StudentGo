@@ -14,4 +14,9 @@ async function getToken() {
   }
 }
 
-export {saveToken, getToken};
+async function deleteToken(){
+  console.log("logout initiated")
+  await SecureStore.deleteItemAsync("token");
+}
+
+export {saveToken, getToken, deleteToken};
