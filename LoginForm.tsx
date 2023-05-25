@@ -1,50 +1,60 @@
-import React, { Component, useState } from "react";
-// import { View } from 'react-native/types';
-import { Text, TextInput, View, Button } from "react-native";
+import { Text, View, TextInput, Button, Alert } from "react-native";
+import { useForm, Controller } from "react-hook-form";
 
-export default function LoginForm() {
-  const [username, setUsername] = useState({ username: "" });
-  const [password, setPassword] = useState({ password: "" });
+export default function LoginForm({login}) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
-  function handleUsernameChange(evt) {
-    setUsername((curr) => ({ ...curr, username: evt.target }));
-  }
-
-  function handlePasswordChange() {
-
-  }
-
-  function handleSubmit(){
-    console.log("form submitted");
-    console.log("username is:", username, "password is:", password)
-  }
+  const onSubmit = (data) => {
+    console.log("onSubmit called with data = ", data);
+    login(data)
+  };
 
   return (
     <View>
-      <TextInput
-        style={{
-          height: 40,
-          borderColor: "gray",
-          borderWidth: 1,
+      <Controller
+        control={control}
+        rules={{
+          required: true,
         }}
-        placeholder="Enter your username"
-        onChangeText={newName => setUsername(newName)}
-        value={username}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            placeholder="Username"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+        name="username"
       />
-      <TextInput
-        style={{
-          height: 40,
-          borderColor: "gray",
-          borderWidth: 1,
+      {errors.username && <Text>Username required.</Text>}
+
+      <Controller
+        control={control}
+        rules={{
+          maxLength: 100,
+          required: true,
         }}
-        placeholder="Enter your password"
-        onChangeText={newPass => setPassword(newPass)}
-        // name="password"
-        value={password}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            placeholder="Password"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+        name="password"
       />
-      <Button
-        title="Submit"
-        onPress={handleSubmit} />
+      {errors.password && <Text>Password required.</Text>}
+      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 }
