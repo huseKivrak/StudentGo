@@ -1,29 +1,64 @@
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 import RithmApi from "./api";
-import { useEffect } from "react";
-function HomePage(){
+import { useEffect, useState } from "react";
 
-    useEffect(function getLectureSessionsOnMount() {
-      async function getLectureSessions(){
-        console.log("useEffect called")
-        const lectureSessions = await getEverything();
-        console.log("lectureSessions", lectureSessions);
-      }
-      getLectureSessions();
-    },[])
+function HomePage({ logout }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [date, setDate] = useState(new Date().toDateString());
+  const [dayItems, setDayItems] = useState(null);
 
-    async function getEverything(){
-        let res = await RithmApi.getDetailedLectureSessions();
+  useEffect(function getDayCurricItemsOnMount() {
+    async function getDayCurricItems() {
+      console.log("useEffect for HomePage called");
+      let items = await RithmApi.getDayCurric();
+      console.log("day items from Rithm API= ", items);
 
-        console.log("getEverything = ", res);
+      setDayItems(items);
+      setIsLoading(false);
     }
+    getDayCurricItems();
+  }, [date]);
 
+/** handleSwipe
+ *
+ * setDate to (date) => date + 1
+ *
+ */
+
+  function makeCards(dayItems){
+    for (const item of dayItems){
+      if (item.type === "lecture"){
+
+      } else if (item.type === "exercise"){
+
+      }else if( item.type === "event"){
+
+      }
+
+      }
+    }
+  }
+
+  if (isLoading)
     return (
-        <View>
-            <Text>Home Page</Text>
-        </View>
-    )
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
 
+  return (
+    <View>
+      <Text>Home Page</Text>
+      {{makeCards()}}
+
+      <Button
+        onPress={logout}
+        title="Logout"
+        color="#f194ff"
+        accessibilityLabel="a button to logout when pressed"
+      />
+    </View>
+  );
 }
 
 export default HomePage;
