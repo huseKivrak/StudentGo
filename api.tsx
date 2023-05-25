@@ -1,8 +1,11 @@
 import * as React from "react";
 import { saveToken, getToken } from "./secureStore";
 import axios from "axios";
+import Constants from "expo-constants";
+const { manifest } = Constants;
 
-const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
+// const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = "https://77dd-107-3-134-199.ngrok-free.app/api"; // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -14,81 +17,45 @@ const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_UR
  */
 
 class RithmApi {
-  // the token for interactive with the API will be stored here.
 
   static async login(cred) {
     console.log("login (api file) called with data = ", cred);
-    // debugger;
 
     let res;
     try {
-      // res = await axios({
-      //     method: "post",
-      //     url: "http://127.0.0.1:8000/api/-token/",
-      //     // url: "http://10.0.2.2:8000/api/-token/",
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       // Accept: 'application/json',
-      //     },
-      //     // data: {
-      //     //   username: data.username,
-      //     //   password: data.password,
-      //     // }
-      //     data:jsonData,
-      //   });
-      // res = await axios.post("http://127.0.0.1:8000/api/-token/", cred);
-      // res = await axios.post("http://10.0.2.2:8000/api/-token/", cred);
-      // res = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto")
-      // res = await axios.post("http://10.0.2.2:8000/api/-token/", cred);
-      res = await axios.post(`http://192.168.1.19:8000/api/-token/`, cred);
-      // console.log("res = ", res);
-      // console.log("Response success, res data = ", res.response.data);
-    } catch (e) {
-      console.log("error = ", e);
-      console.log("res = ", res);
-      // console.log("somehow a resp?", res.data.token)
-      // console.error("Error from login api = ", e.response.data);
-      // return res.data.token;
+      res = await axios.post(`https://77dd-107-3-134-199.ngrok-free.app/api/-token/`, cred);
+      console.log("login res = ", res);
+    } catch (err) {
+      console.log("login catch - error = ", err);
+      console.log("login catch - res = ", res);
+      return false;
     }
 
-    // let res = await axios({
-    //   method: "post",
-    //   url: "http://127.0.0.1:8000/api/-token/",
-    //   // url: "http://10.0.2.2:8000/api/-token/",
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     // Accept: 'application/json',
-    //   },
-    //   data: {
-    //     username: data.username,
-    //     password: data.password,
-    //   },
-    // });
-    // debugger;
+    const token = res.data.token;
+    console.log("token received = ", token);
 
-    console.log("res:", res)
-    // const token = res.data.token;
-    // console.log("token received = ", token);
+    await saveToken(token);
 
-    // await saveToken(token);
-
-    return "Token saved.";
+    return true;
   }
 
-  static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
+  static async request(endpoint) {
+    console.debug("API Call:", endpoint);
 
     const token = await getToken();
+    console.log("TOKEN IN REQUEST CALL = ", token);
     const url = `${BASE_URL}/${endpoint}/`;
-    const headers = { Authorization: `Token ${token}` };
-    const params = method === "get" ? data : {};
+    console.log("request url = ", url);
+    const tokenHeaders = { Authorization: `Token ${token}` };
+    console.log("request headers = ", tokenHeaders);
 
     try {
-      return (await axios({ url, method, data, params, headers })).data;
+      console.log("MAKING AXIOS REQUEST")
+      const res = (await axios.get(url, {headers: tokenHeaders}));
+      console.log("res from request inside try block = ", res);
+      return res;
     } catch (err) {
-      console.error("API Error:", err.response);
-      let message = err.response.data.error.message;
-      throw Array.isArray(message) ? message : [message];
+      console.error("API Error:", err);
     }
   }
 
@@ -124,6 +91,7 @@ class RithmApi {
   static async getDetailedLectureSessions() {
     let res = await this.request("lecturesessions");
     const allLectureSessions = res.data.results;
+    console.log("allLectureSessions", allLectureSessions)
     const pubLectureSessions = allLectureSessions.filter(
       (l) => l.status === "published"
     );
