@@ -1,12 +1,17 @@
 import * as React from "react";
-import { saveToken, getToken } from "./secureStore";
+import { saveToken, getToken, deleteToken } from "./secureStore";
 import axios from "axios";
 import Constants from "expo-constants";
 const { manifest } = Constants;
 
 // const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
 // const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
+<<<<<<< Updated upstream
 const BASE_URL = `http://192.168.1.19:8000/api`; // || process.env.REACT_APP_BASE_URL;
+=======
+// const BASE_URL = `http://${process.env.MACHINE_IP_ADDRESS}:8000/api`; // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = `http://192.168.254.122:8000/api`; // || process.env.REACT_APP_BASE_URL;
+>>>>>>> Stashed changes
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -47,7 +52,7 @@ class RithmApi {
 
     const token = await getToken();
     console.log("TOKEN IN REQUEST CALL = ", token);
-    const url = `${BASE_URL}/${endpoint}/`;
+    const url = `${BASE_URL}/${endpoint}`;
     console.log("request url = ", url);
     const tokenHeaders = { Authorization: `Token ${token}` };
     console.log("request headers = ", tokenHeaders);
@@ -101,18 +106,18 @@ class RithmApi {
     const lectureSessions = [];
 
     for (const lect of pubLectureSessions) {
-      let res = await this.request(`lecturesessions/${lect.id}`);
+      const endpoint = lect.api_url.split("/api/")[1];
+      let res = await this.request(endpoint);
       lectureSessions.push(res.data);
     }
-    lectureSessions.forEach(ls => ls.type === "lecture")
+    lectureSessions.forEach(ls => ls.type === "lecture");
     return lectureSessions;
   }
 
   /**
    * Get all exercise details
    * Returns JSON:
-   * [
-      {
+   * [{
         "id": 0,
         "title": "string",
         "description": "string",
@@ -125,24 +130,18 @@ class RithmApi {
         "asset_set": [
           "string"
         ],
-        "exerciselabsession_set": [
-          {
-            "start_at": "2023-05-23T22:51:23.780Z",
-            "end_at": "2023-05-23T22:51:23.780Z",
-            "dri": "string",
-            "staff": [
-              "string"
-            ]
-          }
+        "start_at": "2023-05-23T22:51:23.780Z",
+        "end_at": "2023-05-23T22:51:23.780Z",
+        "dri": "string",
+        "staff": [
+          "string"
         ]
-      }
-   * ]
+      }, ... ]
    *
    */
 
   static async getDetailedExerciseSessions() {
     let res = await this.request("exercisesessions");
-    //TODO: not results; "asset_set" instead?
     const allExerciseSessions = res.data.results;
     const pubExerciseSessions = allExerciseSessions.filter(
       (ex) => ex.status === "published"
@@ -150,10 +149,15 @@ class RithmApi {
     const exerciseSessions = [];
 
     for (const exercise of pubExerciseSessions) {
-      let res = await this.request(`exercisesessions/${exercise.id}`);
-      exerciseSessions.push(res.data);
+      const endpoint = exercise.api_url.split("/api/")[1];
+      let res = await this.request(endpoint);
+      let shared = {...res.data};
+      delete shared.exerciselabsession_set;
+      let labSessions = res.data.exerciselabsession_set.map((session)=> ({...shared, ...session}));
+      exerciseSessions.push(...labSessions);
     }
-    exerciseSessions.forEach(ex => ex.type = "exercise")
+
+    exerciseSessions.forEach(ex => ex.type = "exercise");
     return exerciseSessions;
   }
 
@@ -191,21 +195,24 @@ class RithmApi {
     const pubEvents = allEvents.filter((evt) => evt.status === "published");
     const events = [];
 
-    //TODO: events don't have id prop
     for (const evt of pubEvents) {
-      let res = await this.request(`events/${evt.id}`);
+      const endpoint = evt.api_url.split("/api/")[1];
+      let res = await this.request(endpoint);
       events.push(res.data);
     }
-    events.forEach(ev => ev.type === "event")
+    events.forEach(ev => ev.type === "event");
     return events;
   }
 
-  /** getDayCurric
+  /** getCurricByDay
    *
-   * Returns the (few) curriculum objects of all of them...!?
+   * Returns all curric items (lectures, exercises, events) in JSON: [
+   *
+   * ]
+   *
    *
    */
-  static async getDayCurric(date = new Date().toDateString()) {
+  static async getCurricByDay(date = new Date().toDateString()) {
     const lectureSessionPromise = this.getDetailedLectureSessions();
     const exerciseSessionPromise = this.getDetailedExerciseSessions();
     const eventPromise = this.getDetailedEvents();
@@ -216,13 +223,42 @@ class RithmApi {
       eventPromise,
     ]);
 
-    const dayCurric = results.filter((thing) => {
-      const curricDate = new Date(thing["start_at"]).toDateString();
+    // const dayCurric = results.filter((thing) => {
+    //   const curricDate = new Date(thing["start_at"]).toDateString();
 
-      return curricDate === date;
+    //   return curricDate === date;
+    // });
+
+    // Get all data from each of the promises that are fulfilled
+    let curricItems = results.map((result) => {
+      if(result.status === 'fulfilled'){
+        return result.value;
+      }
     });
-
-    return dayCurric;
+    // compile into one array
+    curricItems = curricItems.flat(1);
+    // sort this array by start at
+    curricItems.sort((a,b) => Date.parse(a.start_at) - Date.parse(b.start_at));
+    // initialize array to hold each of the arrays of curric items
+    let curricDays = [];
+    // while there are still items in our everything data array
+    while (curricItems.length > 0) {
+    // initialize empty array for that date
+      let dateCurricItems = [];
+    // initialize comparison variable (zeroth element)
+      let date = curricItems[0].start_at.slice(0, 10);
+    // while loop - iterate through sorted array of all curric events
+      while(date === curricItems[0].start_at.slice(0, 10)) {
+    //    compare string date to comparison variable
+    //    if its the same, push item into array
+    //    if its different, end inner loop
+        let item = curricItems.shift();
+        dateCurricItems.push(item);
+      }
+      curricDays.push(dateCurricItems);
+    }
+    // once outer while loop ends, return array of date items
+    return curricDays;
   }
 
   /** Get details on a company by handle. */

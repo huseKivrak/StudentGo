@@ -38,13 +38,13 @@ function HomePage({ logout }) {
       }
     }
 
-  if (isLoading){
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
+  // if (isLoading){
+  //   return (
+  //     <View>
+  //       <Text>Loading...</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <View>
