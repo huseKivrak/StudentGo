@@ -2,53 +2,56 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { useState, useEffect } from "react";
 import RithmApi from "./api";
-import Login from "./Login";
+import LoginForm from "./LoginForm";
 import HomePage from "./HomePage";
-import { getToken } from "./secureStore";
+import { getToken, deleteToken } from "./secureStore";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   console.log("App launched with loggedIn = ", loggedIn);
 
-  useEffect(
-    function checkAndSetLoginStatusOnMount() {
-      async function checkSetLogin() {
-        try {
-          await getToken();
-          setLoggedIn(true);
-          console.log("Check login on mount complete")
-        } catch (err) {
-          setLoggedIn(false);
-          console.log("Check login on mount - caught error")
-        }
+  useEffect(function checkAndSetLoginStatusOnMount() {
+    async function checkSetLogin() {
+      try {
+        await getToken();
+        setLoggedIn(true);
+        console.log("Check login on mount complete");
+      } catch (err) {
+        setLoggedIn(false);
+        console.log("Check login on mount - caught error");
       }
-      checkSetLogin()
-     }, []
-  );
+    }
+    checkSetLogin();
+  }, []);
 
-/** rithmLogin
- *
- * store sessionId/token from rithm api?
- *
- */
-async function rithmLogin(data) {
-  /**make POST request to rithm API with login credentials,
-   *store sessionId/cookie somewhere, use for future requests*/
-  console.log("rithmLogin(App) called with data = ", data);
+  /** rithmLogin
+   *
+   * store sessionId/token from rithm api?
+   *
+   */
+  async function login(data) {
+    /**make POST request to rithm API with login credentials,
+     *store sessionId/cookie somewhere, use for future requests*/
+    console.log("login(App) called with data = ", data);
 
-  const success = await RithmApi.login(data);
-  if (success === "Token saved.") {
-    setLoggedIn(true);
+    const success = await RithmApi.getAndSaveToken(data);
+    if (success) {
+      setLoggedIn(true);
+    }
   }
-}
 
-return (
-  <View style={styles.container}>
-    {loggedIn ? <HomePage /> : <Login rithmLogin={rithmLogin} />}
-    <StatusBar />
-  </View>
-);
+  async function logout() {
+    await deleteToken();
+    setLoggedIn(false);
+  }
+
+  return (
+    <View style={styles.container}>
+      {loggedIn ? <HomePage logout={logout} /> : <LoginForm login={login} />}
+      <StatusBar />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
