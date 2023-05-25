@@ -6,7 +6,7 @@ const { manifest } = Constants;
 
 // const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
 // const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
-const BASE_URL = `http://${process.env.MACHINE_IP_ADDRESS}:8000/api`; // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = `http://192.168.1.19:8000/api`; // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -142,6 +142,7 @@ class RithmApi {
 
   static async getDetailedExerciseSessions() {
     let res = await this.request("exercisesessions");
+    //TODO: not results; "asset_set" instead?
     const allExerciseSessions = res.data.results;
     const pubExerciseSessions = allExerciseSessions.filter(
       (ex) => ex.status === "published"
@@ -190,6 +191,7 @@ class RithmApi {
     const pubEvents = allEvents.filter((evt) => evt.status === "published");
     const events = [];
 
+    //TODO: events don't have id prop
     for (const evt of pubEvents) {
       let res = await this.request(`events/${evt.id}`);
       events.push(res.data);
