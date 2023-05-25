@@ -5,7 +5,8 @@ import Constants from "expo-constants";
 const { manifest } = Constants;
 
 // const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
-const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
+// const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = `http://${process.env.MACHINE_IP_ADDRESS}:8000/api`; // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -23,7 +24,7 @@ class RithmApi {
     let res;
     try {
       res = await axios.post(
-        `https://r99.ngrok.dev/api/-token/`,
+        `${BASE_URL}/-token/`,
         cred
       );
       console.log("login res = ", res);

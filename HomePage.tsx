@@ -37,19 +37,19 @@ function HomePage({ logout }) {
 
       }
     }
-  }
 
-  if (isLoading)
+  if (isLoading){
     return (
       <View>
         <Text>Loading...</Text>
       </View>
     );
+  }
 
   return (
     <View>
       <Text>Home Page</Text>
-      {{makeCards()}}
+      {/* {{makeCards()}} */}
 
       <Button
         onPress={logout}
