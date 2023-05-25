@@ -3,18 +3,19 @@ import RithmApi from "./api";
 import { useEffect } from "react";
 function HomePage(){
 
-    useEffect(()=>{
+    useEffect(function getLectureSessionsOnMount() {
+      async function getLectureSessions(){
         console.log("useEffect called")
-        getEverything();
+        const lectureSessions = await getEverything();
+        console.log("lectureSessions", lectureSessions);
+      }
+      getLectureSessions();
     },[])
-
-
-
 
     async function getEverything(){
         let res = await RithmApi.getDetailedLectureSessions();
 
-        console.log(res);
+        console.log("getEverything = ", res);
     }
 
     return (
