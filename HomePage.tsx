@@ -1,4 +1,14 @@
-import { Button, Text, View, FlatList, StyleSheet, StatusBar, Dimensions, Image, Animated } from "react-native";
+import {
+  Button,
+  Text,
+  View,
+  FlatList,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  Image,
+  Animated,
+} from "react-native";
 import RithmApi from "./api";
 import { useEffect, useState } from "react";
 import Item from "./Item";
@@ -39,14 +49,20 @@ function HomePage({ logout }) {
     [curricItems]
   );
 
-
-
-  function handleSwipeRight() {
-    setDayIndex((idx) => idx++);
-  }
-
-  function handleSwipeLeft() {
-    if (dayIndex > 0) setDayIndex((idx) => idx--);
+  function ListItem({ items }) {
+    return (
+      <View>
+        {items.map((item) => {
+          return (
+            <View key={items.title} style={styles.item}>
+              <Text>{item.title}</Text>
+              <Text>{item.description}</Text>
+              <Text>{item.start_at}</Text>
+            </View>
+          );
+        })}
+      </View>
+    );
   }
 
   if (isLoading) {
@@ -68,19 +84,10 @@ function HomePage({ logout }) {
       <Text>Home Page</Text>
       <FlatList
         data={curricItems}
-        renderItem={({ item }) => (
-          <View>
-            {item.map((elem) => (
-                <Item
-                title={elem.title}
-                description={elem.description}
-                start_at={elem.start_at}
-              />
-            )
-        )}
-        </View>
-        )}
-        keyExtractor={(item, idx) => idx}
+        renderItem={({ item }) => {
+          return <ListItem items={item} />;
+        }}
+        keyExtractor={(item) => item[0].start_at}
         horizontal
       />
       <Button
@@ -89,27 +96,26 @@ function HomePage({ logout }) {
         color="#f194ff"
         accessibilityLabel="a button to logout when pressed"
       />
-      <StatusBar/>
+      <StatusBar />
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   item: {
-    color: '#000066',
-    backgroundColor: '#f9c2ff',
+    color: "#000066",
+    backgroundColor: "#f9c2ff",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   title: {
     fontSize: 32,
@@ -130,9 +136,8 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 0,
     marginLeft: "auto",
-    marginRight: "auto"
-  }
-  }
-);
+    marginRight: "auto",
+  },
+});
 
 export default HomePage;
