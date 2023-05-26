@@ -12,6 +12,7 @@ import {
 import RithmApi from "./api";
 import { useEffect, useState } from "react";
 import Item from "./Item";
+import RotatingRithmIcon from "./RotatingRithmIcon";
 
 function HomePage({ logout }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +70,7 @@ function HomePage({ logout }) {
     return (
       <View>
         <Text>Loading...</Text>
+        <RotatingRithmIcon />
         <Button
           onPress={logout}
           title="Logout"
