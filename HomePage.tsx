@@ -1,4 +1,4 @@
-import { Button, Text, View, FlatList, StyleSheet, StatusBar } from "react-native";
+import { Button, Text, View, FlatList, StyleSheet, StatusBar, Dimensions } from "react-native";
 import RithmApi from "./api";
 import { useEffect, useState } from "react";
 
@@ -80,11 +80,16 @@ function HomePage({ logout }) {
       <FlatList
         data={curricItems}
         renderItem={({ item }) => (
-          <Item
-            title={item.title}
-            description={item.description}
-            start_at={item.start_at}
-          />
+          <View>
+            {item.map((elem) => (
+                <Item
+                title={elem.title}
+                description={elem.description}
+                start_at={elem.start_at}
+              />
+            )
+        )}
+        </View>
         )}
         keyExtractor={(item, idx) => idx}
         horizontal
@@ -107,10 +112,13 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
+    color: '#000066',
     backgroundColor: '#f9c2ff',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
   },
   title: {
     fontSize: 32,
