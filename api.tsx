@@ -1,17 +1,10 @@
 import * as React from "react";
 import { saveToken, getToken, deleteToken } from "./secureStore";
 import axios from "axios";
-import Constants from "expo-constants";
-const { manifest } = Constants;
 
 // const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
 // const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
-<<<<<<< Updated upstream
 const BASE_URL = `http://192.168.1.19:8000/api`; // || process.env.REACT_APP_BASE_URL;
-=======
-// const BASE_URL = `http://${process.env.MACHINE_IP_ADDRESS}:8000/api`; // || process.env.REACT_APP_BASE_URL;
-const BASE_URL = `http://192.168.254.122:8000/api`; // || process.env.REACT_APP_BASE_URL;
->>>>>>> Stashed changes
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -28,10 +21,7 @@ class RithmApi {
 
     let res;
     try {
-      res = await axios.post(
-        `${BASE_URL}/-token/`,
-        cred
-      );
+      res = await axios.post(`${BASE_URL}/-token/`, cred);
       console.log("login res = ", res);
     } catch (err) {
       console.log("login catch - error = ", err);
@@ -110,7 +100,7 @@ class RithmApi {
       let res = await this.request(endpoint);
       lectureSessions.push(res.data);
     }
-    lectureSessions.forEach(ls => ls.type === "lecture");
+    lectureSessions.forEach((ls) => ls.type === "lecture");
     return lectureSessions;
   }
 
@@ -151,13 +141,16 @@ class RithmApi {
     for (const exercise of pubExerciseSessions) {
       const endpoint = exercise.api_url.split("/api/")[1];
       let res = await this.request(endpoint);
-      let shared = {...res.data};
+      let shared = { ...res.data };
       delete shared.exerciselabsession_set;
-      let labSessions = res.data.exerciselabsession_set.map((session)=> ({...shared, ...session}));
+      let labSessions = res.data.exerciselabsession_set.map((session) => ({
+        ...shared,
+        ...session,
+      }));
       exerciseSessions.push(...labSessions);
     }
 
-    exerciseSessions.forEach(ex => ex.type = "exercise");
+    exerciseSessions.forEach((ex) => (ex.type = "exercise"));
     return exerciseSessions;
   }
 
@@ -200,7 +193,7 @@ class RithmApi {
       let res = await this.request(endpoint);
       events.push(res.data);
     }
-    events.forEach(ev => ev.type === "event");
+    events.forEach((ev) => ev.type === "event");
     return events;
   }
 
@@ -212,12 +205,12 @@ class RithmApi {
    *
    *
    */
-  static async getCurricByDay(date = new Date().toDateString()) {
+  static async getCurricByDay() {
     const lectureSessionPromise = this.getDetailedLectureSessions();
     const exerciseSessionPromise = this.getDetailedExerciseSessions();
     const eventPromise = this.getDetailedEvents();
 
-    const results = await Promise.all([
+    const results = await Promise.allSettled([
       lectureSessionPromise,
       exerciseSessionPromise,
       eventPromise,
@@ -231,27 +224,30 @@ class RithmApi {
 
     // Get all data from each of the promises that are fulfilled
     let curricItems = results.map((result) => {
-      if(result.status === 'fulfilled'){
+      if (result.status === "fulfilled") {
         return result.value;
       }
     });
     // compile into one array
     curricItems = curricItems.flat(1);
     // sort this array by start at
-    curricItems.sort((a,b) => Date.parse(a.start_at) - Date.parse(b.start_at));
+    curricItems.sort((a, b) => Date.parse(a.start_at) - Date.parse(b.start_at));
     // initialize array to hold each of the arrays of curric items
     let curricDays = [];
     // while there are still items in our everything data array
     while (curricItems.length > 0) {
-    // initialize empty array for that date
+      // initialize empty array for that date
       let dateCurricItems = [];
-    // initialize comparison variable (zeroth element)
+      // initialize comparison variable (zeroth element)
       let date = curricItems[0].start_at.slice(0, 10);
-    // while loop - iterate through sorted array of all curric events
-      while(date === curricItems[0].start_at.slice(0, 10)) {
-    //    compare string date to comparison variable
-    //    if its the same, push item into array
-    //    if its different, end inner loop
+      // while loop - iterate through sorted array of all curric events
+      while (
+        curricItems.length > 0 &&
+        date === curricItems[0].start_at.slice(0, 10)
+      ) {
+        //    compare string date to comparison variable
+        //    if its the same, push item into array
+        //    if its different, end inner loop
         let item = curricItems.shift();
         dateCurricItems.push(item);
       }
