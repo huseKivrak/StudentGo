@@ -51,3 +51,17 @@ This is the documentation version of this API; you can also visit the
         -> each "swipe" increments date state by one; logic is consistent
         "(getCurrentLectures(date state))"
     - third-party library
+
+
+## Rithm styling ideas:
+- $primary: rgb(228, 107, 102);
+- $font-family-base: "Source Serif Pro";
+
+- Banner at top: same white/off white color of phone
++ Rithm logo
++ search bar
++ your account icon
+
+- Nav at bottom:
++ Home
++
