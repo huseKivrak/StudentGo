@@ -4,7 +4,7 @@ import axios from "axios";
 
 // const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
 // const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
-const BASE_URL = `http://192.168.1.19:8000/api`; // || process.env.REACT_APP_BASE_URL;
+const BASE_URL = `http://192.168.254.122:8000/api`; // || process.env.REACT_APP_BASE_URL;
 // const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
 
 /** API Class.
@@ -87,7 +87,7 @@ class RithmApi {
    */
 
   static async getDetailedLectureSessions() {
-    let res = await this.request("lecturesessions");
+    let res = await this.request("lecturesessions/");
     const allLectureSessions = res.data.results;
     console.log("allLectureSessions", allLectureSessions);
     const pubLectureSessions = allLectureSessions.filter(
@@ -131,7 +131,7 @@ class RithmApi {
    */
 
   static async getDetailedExerciseSessions() {
-    let res = await this.request("exercisesessions");
+    let res = await this.request("exercisesessions/");
     const allExerciseSessions = res.data.results;
     const pubExerciseSessions = allExerciseSessions.filter(
       (ex) => ex.status === "published"
@@ -183,7 +183,7 @@ class RithmApi {
    */
 
   static async getDetailedEvents() {
-    let res = await this.request("events");
+    let res = await this.request("events/");
     const allEvents = res.data.results;
     const pubEvents = allEvents.filter((evt) => evt.status === "published");
     const events = [];
