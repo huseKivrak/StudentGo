@@ -1,6 +1,7 @@
-import { Button, Text, View, FlatList, StyleSheet, StatusBar, Dimensions } from "react-native";
+import { Button, Text, View, FlatList, StyleSheet, StatusBar, Dimensions, Image, Animated } from "react-native";
 import RithmApi from "./api";
 import { useEffect, useState } from "react";
+import Item from "./Item";
 
 function HomePage({ logout }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,18 +49,6 @@ function HomePage({ logout }) {
     if (dayIndex > 0) setDayIndex((idx) => idx--);
   }
 
-  function Item({ title, description, start_at }) {
-    return (
-      <View>
-        <Text>I AM AN ITEM</Text>
-        <Text>{title}</Text>
-        <Text>{description}</Text>
-        <Text>{start_at}</Text>
-      </View>
-    );
-  }
-
-
   if (isLoading) {
     return (
       <View>
@@ -75,7 +64,7 @@ function HomePage({ logout }) {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Home Page</Text>
       <FlatList
         data={curricItems}
@@ -110,6 +99,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    justifyContent: "center",
+    alignItems: "center"
   },
   item: {
     color: '#000066',
@@ -128,7 +119,20 @@ const styles = StyleSheet.create({
   },
   start_at: {
     fontSize: 12,
+  },
+  logo: {
+    position: "relative",
+  },
+  r: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: "auto",
+    marginRight: "auto"
   }
-});
+  }
+);
 
 export default HomePage;
