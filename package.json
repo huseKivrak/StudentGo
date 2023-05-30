@@ -21,6 +21,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
     "react-native": "^0.71.8",
+    "react-native-dotenv": "^3.4.8",
     "react-native-svg": "^13.9.0",
     "react-native-web": "~0.18.10",
     "react-native-webview": "^12.1.0",
