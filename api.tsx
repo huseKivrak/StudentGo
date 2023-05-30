@@ -4,9 +4,6 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { MACHINE_IP_ADDRESS } from "@env"
 
-const ip = process.env.MACHINE_IP_ADDRESS;
-console.log("IP address from .env = ", ip);
-
 const BASE_URL = `http://${process.env.MACHINE_IP_ADDRESS}:8000/api`; // || process.env.REACT_APP_BASE_URL;
 
 /** API Class.
