@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import RithmApi from "./api";
 import { useEffect, useState } from "react";
-import Item from "./Item";
-import ListItem from "./ListItem";
+import ItemsList from "./ItemsList";
 import RotatingRithmIcon from "./RotatingRithmIcon";
 
 function HomePage({ logout }) {
@@ -72,7 +71,7 @@ function HomePage({ logout }) {
       <FlatList
         data={curricItems}
         renderItem={({ item }) => {
-          return <ListItem items={item} />;
+          return <ItemsList items={item} />;
         }}
         keyExtractor={(item) => item[0].start_at}
         horizontal

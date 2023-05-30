@@ -6,7 +6,7 @@ import {
 import Item from "./Item";
 
 
-function ListItem({ items }) {
+function ItemsList({ items }) {
   return (
     <View  style={styles.listItem}>
       {items.map((item) => {
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItem;
+export default ItemsList;
