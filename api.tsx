@@ -1,11 +1,13 @@
 import * as React from "react";
 import { saveToken, getToken, deleteToken } from "./secureStore";
 import axios from "axios";
+import dotenv from "dotenv";
+import { MACHINE_IP_ADDRESS } from "@env"
 
-// const BASE_URL = "http://10.0.2.2:8000/api"; // || process.env.REACT_APP_BASE_URL;
-// const BASE_URL = "https://r99.ngrok.dev/api"; // || process.env.REACT_APP_BASE_URL;
-const BASE_URL = `http://192.168.1.19:8000/api`; // || process.env.REACT_APP_BASE_URL;
-// const TEST_TOKEN =  "jZzoAASOs1SBYrs0mTJOmHw5gCqruexrpgfXEJmoVCzsPCor95QwRUpLMI8xd3Ty"
+const ip = process.env.MACHINE_IP_ADDRESS;
+console.log("IP address from .env = ", ip);
+
+const BASE_URL = `http://${process.env.MACHINE_IP_ADDRESS}:8000/api`; // || process.env.REACT_APP_BASE_URL;
 
 /** API Class.
  *
