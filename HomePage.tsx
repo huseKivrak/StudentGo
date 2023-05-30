@@ -12,6 +12,7 @@ import {
 import RithmApi from "./api";
 import { useEffect, useState } from "react";
 import Item from "./Item";
+import ListItem from "./ListItem";
 import RotatingRithmIcon from "./RotatingRithmIcon";
 
 function HomePage({ logout }) {
@@ -49,22 +50,6 @@ function HomePage({ logout }) {
     },
     [curricItems]
   );
-
-  function ListItem({ items }) {
-    return (
-      <View>
-        {items.map((item) => {
-          return (
-            <View key={items.title} style={styles.item}>
-              <Text>{item.title}</Text>
-              <Text>{item.description}</Text>
-              <Text>{item.start_at}</Text>
-            </View>
-          );
-        })}
-      </View>
-    );
-  }
 
   if (isLoading) {
     return (
@@ -109,37 +94,7 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
     justifyContent: "center",
     alignItems: "center",
-  },
-  item: {
-    color: "#000066",
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-  },
-  title: {
-    fontSize: 32,
-  },
-  description: {
-    fontSize: 18,
-  },
-  start_at: {
-    fontSize: 12,
-  },
-  logo: {
-    position: "relative",
-  },
-  r: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    marginTop: 0,
-    marginBottom: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
+  }
 });
 
 export default HomePage;
