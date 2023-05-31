@@ -50,6 +50,13 @@ function HomePage({ logout }) {
     [curricItems]
   );
 
+
+  // swipe left function
+
+  // swipe right function
+
+
+
   if (isLoading) {
     return (
       <View>
@@ -73,7 +80,7 @@ function HomePage({ logout }) {
         renderItem={({ item }) => {
           return <ItemsList items={item} />;
         }}
-        keyExtractor={(item) => item[0].start_at}
+        // keyExtractor={(item) => item[0].start_at}
         horizontal
       />
       <Button
