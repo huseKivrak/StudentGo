@@ -13,6 +13,7 @@ import RithmApi from "./api";
 import { useEffect, useState } from "react";
 import ItemsList from "./ItemsList";
 import RotatingRithmIcon from "./RotatingRithmIcon";
+import NavBar from "./NavBar";
 
 function HomePage({ logout }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -60,6 +61,7 @@ function HomePage({ logout }) {
   if (isLoading) {
     return (
       <View>
+        <NavBar/>
         <Text>Loading...</Text>
         <RotatingRithmIcon />
         <Button
@@ -74,19 +76,18 @@ function HomePage({ logout }) {
 
   return (
     <View style={styles.container}>
-      <Text>Home Page</Text>
+      <NavBar/>
       <FlatList
         data={curricItems}
         renderItem={({ item }) => {
-          return <ItemsList items={item} />;
+          return <ItemsList items={item} key={item[0].start_at}/>;
         }}
-        // keyExtractor={(item) => item[0].start_at}
         horizontal
       />
       <Button
         onPress={logout}
         title="Logout"
-        color="#f194ff"
+        color="#E46B66"
         accessibilityLabel="a button to logout when pressed"
       />
       <StatusBar />
