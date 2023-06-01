@@ -55,6 +55,7 @@ This is the documentation version of this API; you can also visit the
 
 ## Rithm styling ideas:
 - $primary: rgb(228, 107, 102); or #E46B66
+- tint primary: #f3bcb9
 - $font-family-base: "Source Serif Pro";
 
 - Banner at top: same white/off white color of phone
