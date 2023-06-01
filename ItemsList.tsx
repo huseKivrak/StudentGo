@@ -7,21 +7,21 @@ import {
 import Item from "./Item";
 
 
-function ItemsList({ items }) {
-  let date = new Date(items[0].start_at);
+function ItemsList({ events }) {
+  let date = new Date(events[0].start_at);
   const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let dateStr = `${dayNames[date.getDay()]},  ${date.getMonth() + 1}/${date.getDate()}`
 
   return (
     <View  style={styles.listItem}>
       <Text style={styles.dateStr}>{dateStr}</Text>
-      {items.map((item) => {
+      {events.map((event) => {
         return (
           <Item
-            key={item.start_at}
-            title={item.title}
-            description={item.description}
-            start_at={item.start_at}
+            key={event.start_at}
+            title={event.title}
+            description={event.description}
+            start_at={event.start_at}
           />
         );
       })}
