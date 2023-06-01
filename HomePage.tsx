@@ -10,16 +10,21 @@ import {
   Animated,
 } from "react-native";
 import RithmApi from "./api";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import ItemsList from "./ItemsList";
 import RotatingRithmIcon from "./RotatingRithmIcon";
 import NavBar from "./NavBar";
+import Indicator from "./Indicator";
+
+/** HomePage Component */
 
 function HomePage({ logout }) {
   const [isLoading, setIsLoading] = useState(true);
   const [curricItems, setCurricItems] = useState(null);
   const [dayIndex, setDayIndex] = useState(0);
   //swipeCount state = 0;
+
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   useEffect(function getDayCurricItemsOnMount() {
     async function getDayCurricItems() {
@@ -61,13 +66,12 @@ function HomePage({ logout }) {
   if (isLoading) {
     return (
       <View>
-        <NavBar/>
         <Text>Loading...</Text>
         <RotatingRithmIcon />
         <Button
           onPress={logout}
           title="Logout"
-          color="#f194ff"
+          color="#E46B66"
           accessibilityLabel="a button to logout when pressed"
         />
       </View>
@@ -76,14 +80,22 @@ function HomePage({ logout }) {
 
   return (
     <View style={styles.container}>
-      <NavBar/>
-      <FlatList
+      <Animated.FlatList
         data={curricItems}
-        renderItem={({ item }) => {
-          return <ItemsList items={item} key={item[0].start_at}/>;
+        renderItem={({ item, index }) => {
+          return <ItemsList events={item} key={item[0].start_at}/>;
         }}
         horizontal
+        scrollEventThrottle={32}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: true}
+        )}
+        contentContainerStyle={{paddingBottom: 100}}
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
       />
+      <Indicator scrollX={scrollX} data={curricItems}/>
       <Button
         onPress={logout}
         title="Logout"
@@ -97,7 +109,6 @@ function HomePage({ logout }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginTop: StatusBar.currentHeight || 0,
     justifyContent: "center",
     alignItems: "center",
