@@ -1,8 +1,7 @@
-import * as React from "react";
-import { saveToken, getToken, deleteToken } from "./secureStore";
+import { saveToken, getToken } from "./secureStore";
 import axios from "axios";
-import dotenv from "dotenv";
-import { MACHINE_IP_ADDRESS } from "@env"
+// import dotenv from "dotenv";
+// import { MACHINE_IP_ADDRESS } from "@env"
 
 const BASE_URL = `http://${process.env.MACHINE_IP_ADDRESS}:8000/api`; // || process.env.REACT_APP_BASE_URL;
 
