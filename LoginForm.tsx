@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Button, StyleSheet } from "react-native";
+import { Text, View, TextInput, Button, StyleSheet, Pressable } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import RithmIcon from "./RithmIcon";
 
@@ -21,7 +21,7 @@ function LoginForm({login}) {
 
   return (
     <View style={styles.container}>
-      <RithmIcon />
+      {/* <RithmIcon width={63} height={53} fillColor={"#000000"}/> */}
       <Controller
         control={control}
         rules={{
@@ -58,38 +58,45 @@ function LoginForm({login}) {
         name="password"
       />
       {errors.password && <Text>Password required.</Text>}
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Pressable onPress={handleSubmit(onSubmit)} style={styles.submit}>
+        <Text style={styles.submitText}>Login</Text>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    gap: 25,
+    marginTop: -70,
   },
   icon: {
     marginBottom: 30
   },
   input: {
-    fontSize: 25,
-    paddingLeft: 90,
-    paddingRight: 90,
-    paddingTop: 15,
-    paddingBottom: 15,
-    margin: 10,
+    fontSize: 23,
+    width: 300,
+    height: 50,
     borderRadius: 40,
-    backgroundColor: "#E46B66",
+    backgroundColor: "#f3bcb9",
+    textAlign: "center",
   },
   submit: {
     marginTop: 40,
     backgroundColor: "#E46B66",
-    paddingLeft: 50,
-    paddingRight: 50,
-    paddingTop: 15,
-    paddingBottom: 15,
+    width: 150,
+    height: 60,
     borderRadius: 40,
-    color: "#ffffff"
+    color: "#ffffff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  submitText: {
+    fontSize: 24,
+    fontWeight: "600",
   }
 
 });
