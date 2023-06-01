@@ -11,7 +11,7 @@ import RithmIcon from "./RithmIcon";
 function NavBar({ }) {
   return (
     <View style={styles.navBar}>
-      <RithmIcon/>
+      <RithmIcon width={63} height={53} fillColor={"#000000"}/>
     </View>
   );
 }
@@ -24,8 +24,6 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
     justifyContent: "center",
     alignItems: "center",
-    padding: 15,
-    color: "#ffffff",
   }
 });
 
