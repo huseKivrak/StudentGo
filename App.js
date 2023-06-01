@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { useState, useEffect } from "react";
 import RithmApi from "./api";
 import LoginForm from "./LoginForm";
 import HomePage from "./HomePage";
 import { getToken, deleteToken } from "./secureStore";
+import NavBar from "./NavBar";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -48,17 +49,25 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <NavBar/>
+    <View style={styles.content}>
       {loggedIn ? <HomePage logout={logout} /> : <LoginForm login={login} />}
       <StatusBar />
+    </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
+  content: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20,
   },
 });
