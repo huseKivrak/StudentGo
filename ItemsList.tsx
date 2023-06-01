@@ -32,10 +32,7 @@ function ItemsList({ items }) {
 const styles = StyleSheet.create({
   listItem: {
     color: "#000066",
-    backgroundColor: "#f9c2ff",
     padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
