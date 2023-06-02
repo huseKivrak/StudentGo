@@ -79,8 +79,8 @@ function HomePage({ logout }) {
       <Animated.FlatList
         data={curricItems}
         renderItem={({ item, index }) => {
-          console.log("rendered item is:", item)
-            return <ItemsList events={item} />;
+          console.log("rendered item is:", item);
+          return <ItemsList events={item} />;
         }}
         keyExtractor={(item) => item.start_at}
         horizontal
@@ -92,6 +92,11 @@ function HomePage({ logout }) {
         contentContainerStyle={{ paddingBottom: 100 }}
         showsHorizontalScrollIndicator={false}
         pagingEnabled
+        getItemLayout={(data, index) => ({
+          length: Dimensions.get("window").width,
+          offset: Dimensions.get("window").width * index,
+          index,
+        })}
         initialScrollIndex={dayIndex}
       />
       <Indicator scrollX={scrollX} data={curricItems} />
