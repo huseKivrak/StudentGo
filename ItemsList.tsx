@@ -16,6 +16,7 @@ function ItemsList({ events }) {
     <View  style={styles.listItem}>
       <Text style={styles.dateStr}>{dateStr}</Text>
       {events.map((event) => {
+        console.log("event is:", event.start_at, event.title)
         return (
           <Item
             key={event.start_at}
