@@ -33,7 +33,7 @@ function HomePage({ logout }) {
       console.log("day items from Rithm API= ", items);
 
       setCurricItems(items);
-      console.log("items in state: ", items);
+      console.log("curricItems set:", curricItems);
       setIsLoading(false);
     }
     getDayCurricItems();
@@ -41,27 +41,23 @@ function HomePage({ logout }) {
 
   useEffect(
     function findAndSetDayIndexAfterMount() {
+      setIsLoading(true);
       function findAndSetDayIndex() {
         console.log("findAndSetDayIndex called");
-        const today = new Date().toDateString().split("T")[0];
-
+        const today = new Date().toISOString().split("T")[0];
+        console.log("today is:", today);
         const idx = curricItems.findIndex((item) =>
-          item[0].start_at.startsWith(today)
+          item.some((evt) => evt.start_at.startsWith(today))
         );
-
+        console.log("idx is:", idx);
+        console.log("todays events are", curricItems[idx]);
         setDayIndex(idx);
+        setIsLoading(false);
       }
       if (curricItems && curricItems.length) findAndSetDayIndex();
     },
     [curricItems]
   );
-
-
-  // swipe left function
-
-  // swipe right function
-
-
 
   if (isLoading) {
     return (
@@ -83,19 +79,22 @@ function HomePage({ logout }) {
       <Animated.FlatList
         data={curricItems}
         renderItem={({ item, index }) => {
-          return <ItemsList events={item} key={item[0].start_at}/>;
+          console.log("rendered item is:", item)
+            return <ItemsList events={item} />;
         }}
+        keyExtractor={(item) => item.start_at}
         horizontal
         scrollEventThrottle={32}
         onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: true}
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: true }
         )}
-        contentContainerStyle={{paddingBottom: 100}}
+        contentContainerStyle={{ paddingBottom: 100 }}
         showsHorizontalScrollIndicator={false}
         pagingEnabled
+        initialScrollIndex={dayIndex}
       />
-      <Indicator scrollX={scrollX} data={curricItems}/>
+      <Indicator scrollX={scrollX} data={curricItems} />
       <Button
         onPress={logout}
         title="Logout"
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
     justifyContent: "center",
     alignItems: "center",
-  }
+  },
 });
 
 export default HomePage;
