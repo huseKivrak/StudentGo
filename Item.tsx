@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   start_at: {
     fontSize: 16,
   },
-
 });
 
 export default Item;
