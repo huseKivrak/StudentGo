@@ -2,6 +2,8 @@
 
 > A React Native application compatibile with iOS and Android presenting educational events obtained from Rithm Student Information System (SIS) API.
 
+
+
 <!-- PROJECT Demo/Bug/Feature links -->
 <div align="center">
   <p align="center">
@@ -14,6 +16,8 @@
     <br />
   </p>
 </div>
+
+
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -71,6 +75,8 @@ The app loads the exercises for the current date, and the user can swipe left to
 
 <p align="right">(<a href="#RithmGo">back to top</a>)</p>
 
+
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -91,6 +97,8 @@ Note: Both front and back end development servers must be running on the machine
 
 <p align="right">(<a href="#RithmGo">back to top</a>)</p>
 
+
+
 <!-- USAGE EXAMPLES -->
 ## Usage
 
@@ -100,6 +108,8 @@ Note: Both front and back end development servers must be running on the machine
 </div>
 
 <p align="right">(<a href="#RithmGo">back to top</a>)</p>
+
+
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -143,7 +153,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Huse Kivrak - [huse.dev](huse.dev) - [LinkedIn](https://www.linkedin.com/in/husekivrak/)
+Huse Kivrak - [huse.dev](https://huse.dev/) - [LinkedIn](https://www.linkedin.com/in/husekivrak/)
 
 <p align="right">(<a href="#RithmGo">back to top</a>)</p>
 
@@ -152,7 +162,7 @@ Huse Kivrak - [huse.dev](huse.dev) - [LinkedIn](https://www.linkedin.com/in/huse
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Co-Creator: Ari Denary](https://github.com/ari-denary)
+* Co-Creator:[Ari Denary](https://github.com/ari-denary)
 
 <p align="right">(<a href="#RithmGo">back to top</a>)</p>
 
