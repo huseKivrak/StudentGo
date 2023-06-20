@@ -6,9 +6,7 @@
 <div align="center">
   <p align="center">
     <br />
-    <a href="https://github.com/huseKivrak/RithmGo"><strong>Explore the docs »</strong></a>
-    <br />
-    <a href="https://github.com/huseKivrak/RithmGo">View Demo</a>
+    <a href="https://github.com/huseKivrak/RithmGo/#usage">View Demo</a>
     ·
     <a href="https://github.com/huseKivrak/RithmGo/issues">Report Bug</a>
     ·
