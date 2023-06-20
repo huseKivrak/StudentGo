@@ -170,7 +170,7 @@ Huse Kivrak - [huse.dev](huse.dev) - [LinkedIn](https://www.linkedin.com/in/huse
 [stars-url]: https://github.com/huseKivrak/RithmGo/stargazers
 [issues-shield]: https://img.shields.io/github/issues/huseKivrak/RithmGo.svg?style=for-the-badge
 [issues-url]: https://github.com/huseKivrak/RithmGo/issues
-[license-shield]: https://img.shields.io/github/license/huseKivrak/RithmGo.svg?style=for-the-badge
-[license-url]: https://github.com/huseKivrak/RithmGo/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/badge/License-MIT-41acc0?style=for-the-badge&logo=MIT&logoColor=white
+[license-url]: https://github.com/huseKivrak/RithmGo/LICENSE.txt
 [React-Native.js]: https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-Native-url]: https://reactnative.dev/
