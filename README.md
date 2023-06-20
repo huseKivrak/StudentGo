@@ -162,7 +162,7 @@ Huse Kivrak - [huse.dev](https://huse.dev/) - [LinkedIn](https://www.linkedin.co
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* Co-Creator:[Ari Denary](https://github.com/ari-denary)
+* Co-Creator: [Ari Denary](https://github.com/ari-denary)
 
 <p align="right">(<a href="#RithmGo">back to top</a>)</p>
 
